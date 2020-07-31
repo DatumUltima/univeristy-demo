@@ -6,5 +6,6 @@ export const styles = {
   todoName: { fontSize: 20, fontWeight: 'bold' },
   todoDescription: { marginBottom: 0 },
   button: { backgroundColor: 'black', color: 'white', outline: 'none', fontSize: 18, padding: '12px 0px' },
-  error: { color: 'red', backgroundColor: 'lightgrey' }
+  error: { color: 'red', backgroundColor: 'lightgrey' },
+  table: {border: '1px solid black'}
 };

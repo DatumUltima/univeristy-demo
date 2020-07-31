@@ -93,4 +93,5 @@ class SignIn extends React.Component {
         );
     }
 }
+export { SignIn };
 export default SignIn;

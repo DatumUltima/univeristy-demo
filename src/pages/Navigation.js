@@ -1,29 +1,27 @@
-import React from 'react';
-import { Auth } from 'aws-amplify';
-import { getUser } from './Authentication';
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { Auth } from "aws-amplify";
+import { getUser } from "./Authentication";
+import { Redirect } from "react-router-dom";
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      redirect: null
+      redirect: null,
     };
   }
 
   async signOut() {
     try {
-      await Auth.signOut()
+      await Auth.signOut();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
   render() {
     if (this.state.redirect) {
-      return (
-        <Redirect to="/" />
-      )
+      return <Redirect to="/" />;
     }
 
     const loggedIn = getUser() ? true : false;
@@ -56,18 +54,18 @@ class Nav extends React.Component {
             </div>
             {loggedIn ? (
               <div className="navbar-nav">
-                <a className="nav-item nav-link" href="/login">
-                  Login
-                </a>
-              </div>
-            ) : (
-              <div className="navbar-nav">
                 <a
                   className="nav-item nav-link"
                   href="#"
                   onClick={this.signOut}
                 >
                   Logout
+                </a>
+              </div>
+            ) : (
+              <div className="navbar-nav">
+                <a className="nav-item nav-link" href="/login">
+                  Login
                 </a>
               </div>
             )}
@@ -77,5 +75,5 @@ class Nav extends React.Component {
     );
   }
 }
-
+export { Nav };
 export default Nav;

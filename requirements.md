@@ -8,3 +8,4 @@
 1. students get notified via email to check the portal
 1. they can upload their terms and conditions agreement
 1. the portal tracks how much funding their club has been successfully allocated annually, and how much they have remaining in their cap
+1. Initially students have to have a meeting with me, then they have to submit a web form application with a budget and supporting documentation

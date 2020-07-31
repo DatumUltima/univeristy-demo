@@ -1,5 +1,4 @@
 import React from 'react';
-import Nav from './Nav';
 
 class Welcome extends React.Component {
     constructor(props) {
@@ -14,11 +13,11 @@ class Welcome extends React.Component {
 
         return (
             <div >
-                <Nav />
                 <h1>Welcome</h1>
             </div>
         );
     }
 }
 
+export {Welcome};
 export default Welcome;
