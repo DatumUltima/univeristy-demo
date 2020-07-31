@@ -47,8 +47,8 @@ class Nav extends React.Component {
               </a>
             </div>
             <div className="navbar-nav">
-              <a className="nav-item nav-link" href="/todo">
-                ToDos
+              <a className="nav-item nav-link" href="/grants">
+                Grants
                 <span className="sr-only">(current)</span>
               </a>
             </div>

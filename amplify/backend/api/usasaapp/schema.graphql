@@ -1,5 +1,14 @@
-type Todo @model {
+type Grant @model {
   id: ID!
   name: String!
+  status: GrantStatus!
   description: String
+}
+
+enum GrantStatus {
+  DRAFT
+  SUBMITTED
+  REVISE
+  REJECTED
+  APPROVED
 }

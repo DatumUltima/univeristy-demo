@@ -1,42 +1,45 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
+export const createGrant = /* GraphQL */ `
+  mutation CreateGrant(
+    $input: CreateGrantInput!
+    $condition: ModelGrantConditionInput
   ) {
-    createTodo(input: $input, condition: $condition) {
+    createGrant(input: $input, condition: $condition) {
       id
       name
+      status
       description
       createdAt
       updatedAt
     }
   }
 `;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
+export const updateGrant = /* GraphQL */ `
+  mutation UpdateGrant(
+    $input: UpdateGrantInput!
+    $condition: ModelGrantConditionInput
   ) {
-    updateTodo(input: $input, condition: $condition) {
+    updateGrant(input: $input, condition: $condition) {
       id
       name
+      status
       description
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
+export const deleteGrant = /* GraphQL */ `
+  mutation DeleteGrant(
+    $input: DeleteGrantInput!
+    $condition: ModelGrantConditionInput
   ) {
-    deleteTodo(input: $input, condition: $condition) {
+    deleteGrant(input: $input, condition: $condition) {
       id
       name
+      status
       description
       createdAt
       updatedAt

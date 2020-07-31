@@ -2,7 +2,14 @@ import React from 'react'
 import Amplify from 'aws-amplify'
 
 import awsExports from "./aws-exports";
-import {Welcome,ToDoItems,SignIn,Nav} from './pages/pages';
+import {
+  Welcome,
+  SignIn,
+  Nav,
+  GrantList,
+  GrantWorkflow,
+  CreateGrant,
+} from "./pages/pages";
 import {
   Switch, Route,
   BrowserRouter as Router
@@ -19,7 +26,9 @@ const App = () => {
         <Router>
           <Switch>
             <Route exact path="/" component={Welcome} />
-            <Route path="/todo" component={ToDoItems} />
+            <Route exact path="/grants" component={GrantList} />
+            <Route path="/grants/new" component={CreateGrant} />
+            <Route path="/grants/:grantId" component={GrantWorkflow} />
             <Route path="/login" component={SignIn} />
           </Switch>
         </Router>
