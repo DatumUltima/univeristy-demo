@@ -1,97 +1,84 @@
-import React from 'react';
-import { Auth } from 'aws-amplify';
-import { styles } from './styles';
-import { Redirect } from 'react-router-dom';
-
+import React, { useState } from "react";
+import { Auth } from "aws-amplify";
+import { styles } from "./styles";
+import { AuthContext } from "../App";
+import { useHistory } from "react-router-dom";
 
 export const getUser = async () => {
-    try {
-        const user = await Auth.currentAuthenticatedUser();
-        return user;
-    } catch (err) {
-        if (err === "not authenticated") {
-            return null;
-        } else {
-            console.log(`Unexpected error: ${err}`);
-            return null;
-        }
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    return user;
+  } catch (err) {
+    if (err === "not authenticated") {
+      return null;
+    } else {
+      console.log(`Unexpected error: ${err}`);
+      return null;
     }
+  }
 };
 
-class SignIn extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-            error: null,
-            source: props.source,
-            redirect: null
-        };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.signIn = this.signIn.bind(this);
-    }
+export const isAuthenticated = async () => {
+  return getUser().then((res) => {
+    return res ? true : false;
+  });
+};
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+const SignIn = () => {
+  const { dispatch } = React.useContext(AuthContext);
+  const initialFormData = { username: "", password: "" };
+  const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(String);
+  const history = useHistory();
 
-        this.setState({
-            [name]: value
-        });
-    }
+  const handleInputChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-    async signIn() {
-        try {
-            const { username, password } = this.state;
-            await Auth.signIn(username, password);
-            this.setState({ redirect: true });
-        } catch (error) {
-            console.log('error signing in', error);
-        }
-    }
+  async function signIn(event) {
+    event.preventDefault();
+    console.log("logging in");
+    const { username, password } = formData;
+    Auth.signIn(username, password)
+      .then((res) => {
+        dispatch({ type: "LOGIN", payload: {} });
+        return res;
+      })
+      .then((res) => {
+        history.goBack();
+      })
+      .catch((ex) => {
+        console.log("error signing in", ex);
+        setError(ex.message);
+      });
+  }
 
-    async componentDidMount() {
-        const user = await getUser();
-        if (user) {
-            this.setState({ redirect: true });
-        }
-    }
-
-    render() {
-        if (this.state.redirect) {
-            return (
-                this.state.source ? <Redirect to={this.state.source} /> : <Redirect to="/" />
-            )
-        }
-
-        return (
-            <div >
-                <h2>Login</h2>
-                <input
-                    onChange={this.handleInputChange}
-                    name="username"
-                    style={styles.input}
-                    value={this.state.username}
-                    placeholder="Username"
-                />
-                <input
-                    name="password"
-                    onChange={this.handleInputChange}
-                    style={styles.password}
-                    value={this.state.password}
-                    type="password"
-                    placeholder="Password"
-                />
-                <div style={styles.error} >
-                    {this.state.error}
-                </div>
-                <button style={styles.button} onClick={this.signIn}>Sign In</button>
-
-            </div>
-        );
-    }
-}
-export { SignIn };
+  return (
+    <div className="container">
+      <h2>Login</h2>
+      <input
+        onChange={handleInputChange}
+        name="username"
+        style={styles.input}
+        value={formData.username}
+        placeholder="Username"
+      />
+      <input
+        name="password"
+        onChange={handleInputChange}
+        style={styles.password}
+        value={formData.password}
+        type="password"
+        placeholder="Password"
+      />
+      <div style={styles.error}>{error}</div>
+      <button style={styles.button} onClick={signIn}>
+        Sign In
+      </button>
+    </div>
+  );
+};
 export default SignIn;

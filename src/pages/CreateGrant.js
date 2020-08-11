@@ -3,28 +3,31 @@ import { createGrant } from "../graphql/mutations";
 import { API, graphqlOperation } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { styles } from "./styles";
+import { AuthContext } from "../App";
 
-
-const CreateGrant = props =>{
-  const [name, setName] = useState(String);
-  const [description, setDescription] = useState(String);
+const CreateGrant = () =>{
+  const { state } = React.useContext(AuthContext);
+  const initialFormData = { name: "", description: "",status: "DRAFT" };
+  const [formData, setFormData] = useState(initialFormData);
   const history = useHistory();
 
-  function handleNameChange(event) {
-    setName(event.target.value);
+  if(!state.isAuthenticated){
+    history.push("/login");
+    return <div>redirecting</div>
   }
 
-  function handleDescriptionChange(event) {
-    setDescription(event.target.value);
-  }
+  const handleInputChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   async function handleCreateGraphEvent(){
     try {
-      if (!name || !description)
-        return;
-      const grant = { name, description, status: "DRAFT" };
+      if (!formData.name || !formData.description) return;
       const result = await API.graphql(
-        graphqlOperation(createGrant, { input: grant })
+        graphqlOperation(createGrant, { input: formData })
       );
       const newGrant = result.data.createGrant;
       history.push("/grants/" + newGrant.id);
@@ -37,15 +40,15 @@ const CreateGrant = props =>{
    <div className="container">
      <h2>Create new Grant</h2>
      <input
-       onChange={handleNameChange}
+       onChange={handleInputChange}
        style={styles.input}
-       value={name}
+       value={formData.name}
        placeholder="Name"
      />
      <input
-       onChange={handleDescriptionChange}
+       onChange={handleInputChange}
        style={styles.input}
-       value={description}
+       value={formData.description}
        placeholder="Description"
      />
      <button style={styles.button} onClick={handleCreateGraphEvent}>
@@ -55,5 +58,4 @@ const CreateGrant = props =>{
  );
 }
 
-export { CreateGrant };
 export default CreateGrant;
